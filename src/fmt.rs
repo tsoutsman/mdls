@@ -1,5 +1,5 @@
 use dissimilar::Chunk;
-use pulldown_cmark::{CodeBlockKind, CowStr, Event, Tag};
+use pulldown_cmark::{CodeBlockKind, CowStr, Event, Tag, HeadingLevel};
 use text_edit::{TextEdit, TextRange, TextSize};
 
 #[allow(clippy::too_many_lines)]
@@ -18,14 +18,26 @@ pub(crate) fn fmt(text: &str) -> TextEdit {
                     assert!(!in_paragraph);
                     in_paragraph = true;
                 }
-                Tag::Heading(_level, _identifier, _classes) => todo!(),
+                Tag::Heading(level, _identifier, _classes) => {
+                    assert!(!in_paragraph);
+                    let tag = match level {
+                        HeadingLevel::H1 => "#",
+                        HeadingLevel::H2 => "##",
+                        HeadingLevel::H3 => "###",
+                        HeadingLevel::H4 => "####",
+                        HeadingLevel::H5 => "#####",
+                        HeadingLevel::H6 => "######",
+                    }; 
+                    output.push_str(tag);
+                    output.push(' ');
+                },
                 Tag::BlockQuote => todo!(),
                 Tag::CodeBlock(kind) => {
+                    assert!(!in_paragraph);
                     let language_identifier = match kind {
                         CodeBlockKind::Indented => CowStr::Borrowed(""),
                         CodeBlockKind::Fenced(ident) => ident,
                     };
-                    assert!(!in_paragraph);
                     output.push_str("```");
                     output.push_str(&language_identifier);
                     output.push('\n');
@@ -65,7 +77,10 @@ pub(crate) fn fmt(text: &str) -> TextEdit {
 
                     paragraph_text = String::new();
                 }
-                Tag::Heading(_level, _identifier, _classes) => todo!(),
+                Tag::Heading(_level, _identifier, _classes) => {
+                    assert!(!in_paragraph);
+                    output.push_str("\n\n");
+                },
                 Tag::BlockQuote => todo!(),
                 Tag::CodeBlock(_kind) => {
                     assert!(!in_paragraph);
