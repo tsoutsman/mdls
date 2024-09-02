@@ -38,7 +38,7 @@
     rustdoc::bare_urls
 )]
 
-use mdls::{Error, Context, handle};
+use mmdls::{Error, Context, handle};
 
 use lsp_server::Message;
 use lsp_types::{notification, request};

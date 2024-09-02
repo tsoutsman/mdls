@@ -1,5 +1,5 @@
 [package]
-name = "mdls"
+name = "mmdls"
 version = "0.1.0"
 authors = ["Klim Tsoutsman <klim@tsoutsman.com>"]
 edition = "2021"

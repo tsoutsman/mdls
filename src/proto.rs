@@ -1,5 +1,6 @@
-use crate::index::LineIndex;
 use text_edit::{Indel, TextEdit, TextRange, TextSize};
+
+use crate::index::LineIndex;
 
 pub(crate) fn text_edit_vec(
     line_index: &LineIndex,
